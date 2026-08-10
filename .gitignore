@@ -1,0 +1,5 @@
+# Keep company directories but exclude private CV source material.
+cv-context/*
+!cv-context/*/
+cv-context/*/*
+!cv-context/*/.gitkeep
