@@ -2,7 +2,7 @@
 
 ## Evidence and integrity
 
-- Use only facts supported by readable files in the target employer folder or supplied directly by the user.
+- Use only facts supported by readable files in the selected experience or project folder or supplied directly by the user.
 - Never invent or strengthen metrics, scale, ownership, technologies, outcomes, or business impact.
 - Omit a metric when none is supported. Do not insert placeholders such as `[X%]`.
 - Resolve ambiguous or contradictory evidence with the user before editing.
@@ -17,7 +17,7 @@
 - Emphasize engineering decisions, systems, technologies, scale, reliability, performance, automation, security, or user impact when supported.
 - Give each bullet a distinct purpose. Avoid repeating the same achievement, metric, technology list, or opening verb.
 - Avoid first-person pronouns, vague praise, keyword stuffing, filler, and unverifiable adjectives.
-- Match the concise, metric-consistent quality demonstrated by the Sign Language Fingerspelling Recognition System bullets in `cv_main.tex` without copying their wording.
+- Match the concise, metric-consistent quality demonstrated by the strongest existing bullets in `main.tex` without copying their wording.
 
 ## Length
 

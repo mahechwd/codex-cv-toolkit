@@ -1,0 +1,55 @@
+% Copy this file to main.tex, then replace only the anonymous placeholders locally.
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\resumeItem}[1]{\item\small{#1}}
+\newcommand{\resumeSubheading}[4]{
+  \item
+  \textbf{#1} \hfill #2 \\
+  \textit{\small #3} \hfill \textit{\small #4}
+}
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \small #1 \hfill #2
+}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in,label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+\begin{document}
+
+\begin{center}
+  \textbf{\Huge Your Name} \\
+  \small your.email@example.com $|$ +00 0000 000000 $|$ example.com/profile
+\end{center}
+
+\section{Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {Software Engineer}{Month Year -- Month Year}
+    {Example Company}{Location}
+  \resumeItemListStart
+    \resumeItem{}
+    \resumeItem{}
+    \resumeItem{}
+    \resumeItem{}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\section{Projects}
+\resumeSubHeadingListStart
+  \resumeProjectHeading
+    {\textbf{Example Project} $|$ \emph{Technology, Technology}}{}
+  \resumeItemListStart
+    \resumeItem{}
+    \resumeItem{}
+    \resumeItem{}
+    \resumeItem{}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\end{document}

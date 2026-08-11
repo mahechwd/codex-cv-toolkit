@@ -1,27 +1,32 @@
 ---
 name: build-cv-bullets
-description: Build polished software-engineering CV bullet points from raw employer evidence in cv-context and facts supplied in the prompt, then replace the corresponding empty or existing bullets in cv_main.tex. Use for creating bullets from notes, text files, PDFs, or an unstructured experience dump. Do not use for tailoring established bullets to a job description; use tailor-cv-bullets instead.
+description: Build polished software-engineering CV bullet points for work experience or projects from raw evidence in cv-context and facts supplied in the prompt, then replace the corresponding bullets in main.tex. Use for creating bullets from notes, text files, PDFs, or an unstructured experience dump. Do not use for tailoring established bullets to a job description; use tailor-cv-bullets instead.
 ---
 
 # Build CV bullets
 
-Create evidence-backed bullets for one employer and write them directly into `cv_main.tex`.
+Create evidence-backed bullets for one experience or project and write them directly into `main.tex`.
 
 ## Required inputs
 
-- Obtain the target employer from the request. Ask for it if it is unclear.
-- Locate `cv_main.tex` and `cv-context/` from the repository root.
+- Obtain the target name from the request. Ask for it if it is unclear.
+- Locate `main.tex` and `cv-context/` from the repository root.
 - Read [references/building-rules.md](references/building-rules.md) completely before drafting.
+- If local inputs are missing, direct the user to `main.example.tex`, `job-description.example.txt`, and `cv-context.example/`. Do not edit the tracked examples with personal data.
 
 ## Validate the target
 
-1. Normalize the employer name only for directory matching, such as `Example Corp` to `example-corp`. Do not guess between multiple plausible folders.
-2. Require `cv-context/<employer>/` to exist. If it does not, stop and report the expected path.
-3. Recursively enumerate `.md`, `.txt`, and `.pdf` files in that folder. Ignore hidden files, `.gitkeep`, zero-byte files, and unsupported formats.
-4. Read every usable file. Skip unreadable PDFs and list them in the final summary.
-5. If the folder contains no readable, non-empty supported source, stop and report that no usable evidence exists. Prompt facts may supplement evidence but do not replace this folder requirement.
-6. Find the employer's `\resumeSubheading` in `cv_main.tex` and its immediately associated `\resumeItemListStart` block. If it is missing or ambiguous, stop and report the problem.
-7. Count the existing `\resumeItem{...}` entries in that block. Treat this count as immutable. If there are none, stop because the required output count is undefined.
+1. Normalize the target name only for directory matching, such as `Example Corp` to `example-corp`. Do not guess between multiple plausible folders.
+2. Look for the target under `cv-context/experience/<target>/` and `cv-context/projects/<target>/`.
+3. If exactly one matching folder exists, infer its target type. If neither exists, stop and report both expected paths. If both exist and the request does not identify the type, ask the user to choose.
+4. Require the selected target folder to exist. Do not fall back to an example folder.
+5. Recursively enumerate `.md`, `.txt`, and `.pdf` files in that folder. Ignore hidden files, `.gitkeep`, zero-byte files, and unsupported formats.
+6. Read every usable file. Skip unreadable PDFs and list them in the final summary.
+7. If the folder contains no readable, non-empty supported source, stop and report that no usable evidence exists. Prompt facts may supplement evidence but do not replace this folder requirement.
+8. For experience, find the matching `\resumeSubheading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
+9. For a project, find the matching `\resumeProjectHeading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
+10. If the target block is missing or ambiguous, stop and report the problem.
+11. Count the existing `\resumeItem{...}` entries in that block. Treat this count as immutable. If there are none, stop because the required output count is undefined.
 
 ## Build the bullets
 
@@ -34,8 +39,8 @@ Create evidence-backed bullets for one employer and write them directly into `cv
 
 ## Edit safely
 
-1. Replace only the contents of the target employer's existing `\resumeItem{...}` entries.
-2. Do not change bullet count, commands, layout, headings, employer, title, dates, location, projects, skills, or any other CV content.
+1. Replace only the contents of the selected experience or project's existing `\resumeItem{...}` entries.
+2. Do not change bullet count, commands, layout, headings, names, titles, dates, locations, technologies, skills, or any other CV content.
 3. Re-read the edited block and verify:
    - the number of bullets is unchanged;
    - every claim is supported;
@@ -49,4 +54,4 @@ Create evidence-backed bullets for one employer and write them directly into `cv
 
 ## Report
 
-Summarize the employer edited, evidence files used, unreadable files skipped, bullet count preserved, rendered character count of each bullet, and whether PDF layout was visually verified. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
+Summarize the target type and name edited, evidence files used, unreadable files skipped, bullet count preserved, rendered character count of each bullet, and whether PDF layout was visually verified. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
