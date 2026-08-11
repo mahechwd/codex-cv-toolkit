@@ -12,6 +12,7 @@ Create evidence-backed bullets for one experience or project and write them dire
 - Obtain the target name from the request. Ask for it if it is unclear.
 - Locate `main.tex` and `cv-context/` from the repository root.
 - Read [references/building-rules.md](references/building-rules.md) completely before drafting.
+- Rescan the selected target folder on every invocation, including follow-up revisions. Do not rely on a file listing, size, emptiness check, or extracted content from an earlier turn.
 - If local inputs are missing, direct the user to `main.example.tex`, `job-description.example.txt`, and `cv-context.example/`. Do not edit the tracked examples with personal data.
 
 ## Validate the target
@@ -20,19 +21,22 @@ Create evidence-backed bullets for one experience or project and write them dire
 2. Look for the target under `cv-context/experience/<target>/` and `cv-context/projects/<target>/`.
 3. If exactly one matching folder exists, infer its target type. If neither exists, stop and report both expected paths. If both exist and the request does not identify the type, ask the user to choose.
 4. Require the selected target folder to exist. Do not fall back to an example folder.
-5. Recursively enumerate `.md`, `.txt`, and `.pdf` files in that folder. Ignore hidden files, `.gitkeep`, zero-byte files, and unsupported formats.
-6. Read every usable file. Skip unreadable PDFs and list them in the final summary.
-7. If the folder contains no readable, non-empty supported source, stop and report that no usable evidence exists. Prompt facts may supplement evidence but do not replace this folder requirement.
-8. For experience, find the matching `\resumeSubheading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
-9. For a project, find the matching `\resumeProjectHeading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
-10. If the target block is missing or ambiguous, stop and report the problem.
-11. Count the existing `\resumeItem{...}` entries in that block. Treat this count as immutable. If there are none, stop because the required output count is undefined.
+5. Recursively inventory every regular file in the selected folder before reading any evidence. For each file, record its relative path, extension, byte size, and one status: readable evidence, empty, hidden/metadata, unsupported, or unreadable.
+6. Treat non-empty `.md`, `.txt`, and `.pdf` files as supported evidence. Read every supported file completely; do not stop after finding one strong source or assume similarly named files duplicate one another.
+7. Re-check the inventory immediately before drafting. If a supported file was added, removed, or changed size during the task, read the current version and update the inventory before proceeding.
+8. Exclude empty, hidden/metadata, unsupported, and unreadable files from factual evidence, but never omit them silently. List each excluded file and its reason in the final summary. Skip unreadable PDFs rather than inferring their contents.
+9. Create a concise evidence map before drafting: summarise the useful facts contributed by each readable file and identify corroboration or conflicts across files. A file that contributes no selected bullet must still be analysed and recorded.
+10. If the folder contains no readable, non-empty supported source, stop and report that no usable evidence exists. Prompt facts may supplement evidence but do not replace this folder requirement.
+11. For experience, find the matching `\resumeSubheading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
+12. For a project, find the matching `\resumeProjectHeading` in `main.tex` and its immediately associated `\resumeItemListStart` block.
+13. If the target block is missing or ambiguous, stop and report the problem.
+14. Count the existing `\resumeItem{...}` entries in that block. Treat this count as immutable. If there are none, stop because the required output count is undefined.
 
 ## Build the bullets
 
 1. Extract only supported facts: actions, technical implementation, scope, collaboration, outcomes, and evidenced metrics.
 2. Accept additional facts supplied directly in the prompt as evidence for the current request. Do not save prompt facts into `cv-context/` unless explicitly asked.
-3. Track the source of each material claim while drafting. Flag material conflicts instead of choosing silently.
+3. Track the source file for each material claim while drafting. Cross-check every claim against the complete evidence map and flag material conflicts instead of choosing silently.
 4. Select distinct evidence for exactly the required number of bullets.
 5. Apply every rule in `references/building-rules.md`.
 6. Escape generated text correctly for LaTeX.
@@ -54,4 +58,4 @@ Create evidence-backed bullets for one experience or project and write them dire
 
 ## Report
 
-Summarize the target type and name edited, evidence files used, unreadable files skipped, bullet count preserved, rendered character count of each bullet, and whether PDF layout was visually verified. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
+Summarize the target type and name edited; every file discovered and its status; useful evidence contributed by each readable file; excluded or unreadable files and reasons; bullet count preserved; rendered character count of each bullet; and whether PDF layout was visually verified. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
