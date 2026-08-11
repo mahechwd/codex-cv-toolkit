@@ -23,7 +23,10 @@
 
 - Limit each bullet to 113 rendered characters, including spaces and punctuation.
 - Ignore non-rendered LaTeX syntax when counting. Count escaped characters by their displayed form; for example, count `\%` as `%` and `\&` as `&`.
-- Aim as close to 113 characters as useful evidence permits, preferably 105–113 characters.
+- Treat character count as a hard ceiling and drafting guide, not as a measurement of rendered line width. Proportional fonts make equally long strings occupy different space.
+- Do not enforce a hard minimum character count. Aim for 105–113 characters when the evidence supports it, but accept a shorter bullet when it fills the layout well or communicates the strongest fact cleanly.
+- Balance bullets by their rendered appearance: target similar line wrapping and final-line fill within the same role. Use the existing visually approved bullets as the layout reference.
+- If a bullet renders noticeably shorter than its peers, enrich it with supported detail in this order: measurable outcome, technical mechanism, system scope, engineering constraint, then collaboration context.
 - Never add filler, duplicate facts, or weaken clarity merely to approach the limit.
 
 ## LaTeX

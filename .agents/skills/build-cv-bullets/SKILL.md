@@ -40,10 +40,13 @@ Create evidence-backed bullets for one employer and write them directly into `cv
    - the number of bullets is unchanged;
    - every claim is supported;
    - every rendered bullet is at most 113 characters;
+   - bullets occupy a visually consistent amount of line space in the CV;
    - LaTeX-sensitive characters are escaped;
    - no bullet is empty.
-4. If verification fails, revise only the target bullets and verify again.
+4. When LaTeX rendering is available, compile and inspect the target block. Do not use character count alone as a proxy for visual width in a proportional font.
+5. If rendering is unavailable, compare wording and likely visual width against adjacent bullets and report that visual PDF verification was not performed.
+6. If verification fails, revise only the target bullets and verify again.
 
 ## Report
 
-Summarize the employer edited, evidence files used, unreadable files skipped, bullet count preserved, and rendered character count of each bullet. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
+Summarize the employer edited, evidence files used, unreadable files skipped, bullet count preserved, rendered character count of each bullet, and whether PDF layout was visually verified. Mention any material prompt facts used. Do not claim that the CV guarantees an interview or acceptance.
