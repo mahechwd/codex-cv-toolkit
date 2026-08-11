@@ -1,8 +1,5 @@
-# Keep company directories but exclude private CV source material.
-cv-context/*
-!cv-context/*/
-cv-context/*/*
-!cv-context/*/.gitkeep
+# Keep all company names and source material local only.
+cv-context/
 
 # Keep personal CV and vacancy content local only.
 cv_main.tex
