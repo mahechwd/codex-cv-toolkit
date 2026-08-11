@@ -60,7 +60,6 @@ Common LaTeX options include MacTeX or BasicTeX on macOS and TeX Live on Linux. 
        \resumeItem{}
        \resumeItem{}
        \resumeItem{}
-       \resumeItem{}
    \resumeItemListEnd
    ```
 
