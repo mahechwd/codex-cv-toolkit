@@ -3,4 +3,5 @@ cv-context/
 
 # Keep personal CV and vacancy content local only.
 cv_main.tex
+main.tex
 job-description.txt
