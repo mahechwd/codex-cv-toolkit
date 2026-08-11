@@ -3,3 +3,7 @@ cv-context/*
 !cv-context/*/
 cv-context/*/*
 !cv-context/*/.gitkeep
+
+# Keep personal CV and vacancy content local only.
+cv_main.tex
+job-description.txt
