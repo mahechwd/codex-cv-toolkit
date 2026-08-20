@@ -184,10 +184,17 @@ Supported modes are:
 
 - `one-line`: default hard ceiling of 112 visible characters;
 - `preserve-lines`: keep each bullet's rendered line count;
-- `n-lines`: target a user-specified number of lines; and
+- `n-lines`: target a user-specified number of lines;
+- `balanced-lines`: match a common rendered line count and keep multi-line bullets' final lines visually balanced, using an approved bullet as the reference when provided; and
 - `page-fit`: keep the CV within its current page limit.
 
-The skill creates a new draft and preview. Character count is only a fallback: proportional fonts and `\textbf{}` can change actual wrapping, so compile and inspect the preview whenever a LaTeX toolchain is available. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
+For example:
+
+```text
+Use $cv-fit-bullets on main.tex for experience "Example Company" in balanced-lines mode. Use bullet 2 as the visual reference and keep the bullets at two rendered lines.
+```
+
+The skill creates a new draft and preview. Character count is only a fallback: proportional fonts, word boundaries, and `\textbf{}` can change actual wrapping. In `balanced-lines` mode, compile and inspect the preview and aim for multi-line bullets' final lines to occupy roughly 70–90% of the available width. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
 
 ## Tailoring to a job
 
