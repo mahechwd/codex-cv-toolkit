@@ -283,7 +283,7 @@ def check_target_lengths(
     kind: str,
     target_name: str,
     max_characters: int = 220,
-    max_average: float = 170,
+    max_average: float = 180,
 ) -> TargetLengthCheck:
     if max_characters < 1:
         raise ValueError("max characters must be a positive integer")
@@ -595,7 +595,7 @@ def main() -> int:
     check_parser.add_argument("--kind", required=True)
     check_parser.add_argument("--target", required=True)
     check_parser.add_argument("--max-chars", type=int, default=220)
-    check_parser.add_argument("--max-average", type=float, default=170)
+    check_parser.add_argument("--max-average", type=float, default=180)
 
     init_parser = subparsers.add_parser("init", help="Create a non-overwriting draft")
     init_parser.add_argument("--cv", type=Path, required=True)

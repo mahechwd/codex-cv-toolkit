@@ -1,6 +1,6 @@
 ---
 name: cv-build-bullets
-description: Write or strengthen concise, recruiter-readable and technically credible XYZ-style software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or to edit one named Experience or Projects block directly in a LaTeX CV. Defaults to a 220-visible-character ceiling and a 160–170-character block-average target. Do not read context files or PDFs unless explicitly requested.
+description: Write or strengthen concise, recruiter-readable and technically credible XYZ-style software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or to edit one named Experience or Projects block directly in a LaTeX CV. Defaults to a 220-visible-character ceiling and an average near 180 characters. Do not read context files or PDFs unless explicitly requested.
 ---
 
 # CV build bullets
@@ -58,10 +58,10 @@ Create the strongest truthful bullets before layout compression. Work in either 
 ## Verify and report
 
 - Rerun `python3 scripts/cv_drafts.py list <cv-path>` and `python3 scripts/cv_tex.py <cv-path>` after editing.
-- Run `python3 scripts/cv_drafts.py check --cv <cv-path> --kind <kind> --target <exact-name> --max-chars 220 --max-average 170`. Use the user's explicit limits instead when supplied.
+- Run `python3 scripts/cv_drafts.py check --cv <cv-path> --kind <kind> --target <exact-name> --max-chars 220 --max-average 180`. Use the user's explicit limits instead when supplied.
 - Treat this target-specific check as a completion gate. If it exits non-zero, shorten the failing bullets and rerun it until it passes; never report a completed CV edit while the check fails.
 - Confirm the selected bullet count is unchanged, every bullet is non-empty, LaTeX is balanced, and no content outside the selected `\resumeItem{...}` bodies changed. Correct the edit immediately if any invariant fails.
-- Aim for a natural block average of 160–170 visible characters. An average below 160 is acceptable when the bullets are already complete and strong; never pad them to reach the range.
+- Aim for a natural block average of 175–180 visible characters. An average below 175 is acceptable when the bullets are already complete and strong; never add filler merely to reach the range.
 - Recheck bullets near 220 characters for multiple achievements, repeated context, or detachable implementation detail. Split or tighten them when another existing slot can carry a distinct achievement.
 - Apply a two-audience test to every final bullet: a general recruiter can explain what changed and why it mattered, and a senior engineer can identify the concrete method or engineering decision. Rewrite bullets that pass only one side.
 - Re-read the final bullets and trace each material claim to current wording, prompt facts, or an explicitly authorised context source.

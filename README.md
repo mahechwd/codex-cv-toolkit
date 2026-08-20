@@ -164,7 +164,7 @@ The skill:
 - confirms one exact Experience or Projects target;
 - preserves the number and order of `\resumeItem{...}` commands;
 - replaces only their inner content;
-- keeps every bullet within 220 visible characters by default and the block average at or below 170, naturally aiming for 160–170 without padding shorter bullets;
+- keeps every bullet within 220 visible characters by default and the block average at or below 180, naturally aiming for 175–180 without padding shorter bullets;
 - splits independent achievements across existing slots rather than overloading one bullet;
 - leads with plain-English value for HR, then adds only the technical evidence needed to impress a senior engineer;
 - verifies the resulting LaTeX and visible character counts; and
@@ -244,10 +244,10 @@ python3 scripts/cv_drafts.py check \
   --kind experience \
   --target "Example Company" \
   --max-chars 220 \
-  --max-average 170
+  --max-average 180
 ```
 
-This command exits unsuccessfully if a selected bullet is empty or over 220 visible characters, or if the selected block averages more than 170. It checks only the named block.
+This command exits unsuccessfully if a selected bullet is empty or over 220 visible characters, or if the selected block averages more than 180. It checks only the named block.
 
 Enforce a 112-character ceiling:
 

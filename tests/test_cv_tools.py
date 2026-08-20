@@ -277,6 +277,7 @@ class CvDraftTests(unittest.TestCase):
         self.assertTrue(check.passed)
         self.assertEqual((30, 42), check.bullet_characters)
         self.assertEqual(36, check.average_characters)
+        self.assertEqual(180, check.max_average)
 
     def test_target_length_check_rejects_bullet_over_hard_maximum(self) -> None:
         long_bullet = "A" * 221
@@ -299,8 +300,8 @@ class CvDraftTests(unittest.TestCase):
     def test_target_length_check_rejects_average_over_limit(self) -> None:
         source = CV_SOURCE.replace(
             "Built a reliable API using Go.",
-            "A" * 171,
-        ).replace(r"\resumeItem{}", rf"\resumeItem{{{'B' * 171}}}", 1)
+            "A" * 181,
+        ).replace(r"\resumeItem{}", rf"\resumeItem{{{'B' * 181}}}", 1)
         with tempfile.TemporaryDirectory() as temporary_directory:
             cv = Path(temporary_directory) / "main.tex"
             cv.write_text(source, encoding="utf-8")
@@ -311,9 +312,9 @@ class CvDraftTests(unittest.TestCase):
             )
 
         self.assertFalse(check.passed)
-        self.assertEqual((171, 171), check.bullet_characters)
+        self.assertEqual((181, 181), check.bullet_characters)
         self.assertIn(
-            "block average is 171.0 characters; maximum is 170",
+            "block average is 181.0 characters; maximum is 180",
             check.violations,
         )
 

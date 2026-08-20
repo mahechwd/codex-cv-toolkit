@@ -38,12 +38,12 @@
 ## Length and focus
 
 - Use a hard ceiling of 220 visible characters per bullet, including spaces and punctuation, unless the user explicitly supplies a different limit.
-- Aim for a natural block average of 160–170 visible characters. Enforce 170 as the default maximum block average in CV edit mode; 160 is a soft target, not a minimum.
+- Aim for a natural block average of 175–180 visible characters. Enforce 180 as the default maximum block average in CV edit mode; 175 is a soft target, not a minimum.
 - Keep a strong bullet shorter when the complete supported XYZ claim needs fewer words. Never pad with extra technologies, adjectives, or context to approach the target.
 - Allow a bullet to approach 220 only when the additional supported mechanism, constraint, scale, or outcome materially strengthens the same accomplishment.
 - Before accepting a long bullet, remove repeated context and ask whether it contains two accomplishments that should occupy separate existing slots.
 - Count rendered characters rather than LaTeX syntax: escaped forms such as `\%` and `\&` count as one visible character each, while commands such as `\textbf{}` contribute only their visible contents.
-- In CV edit mode, do not rely on estimation: run the target-specific length check and revise until both the 220-character per-bullet ceiling and 170-character maximum block average pass.
+- In CV edit mode, do not rely on estimation: run the target-specific length check and revise until both the 220-character per-bullet ceiling and 180-character maximum block average pass.
 - Use `$cv-fit-bullets` in a separate request when the user wants one-line bullets, an exact rendered line count, or a one-page CV.
 
 ## LaTeX
