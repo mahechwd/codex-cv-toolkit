@@ -1,0 +1,4 @@
+interface:
+  display_name: "CV Apply Bullets"
+  short_description: "Safely apply one approved CV bullet draft"
+  default_prompt: "Use $cv-apply-bullets to review and apply my approved CV bullet draft."
