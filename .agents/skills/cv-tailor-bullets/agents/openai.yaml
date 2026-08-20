@@ -1,0 +1,4 @@
+interface:
+  display_name: "CV Tailor Bullets"
+  short_description: "Draft truthful job-specific CV bullet rewrites"
+  default_prompt: "Use $cv-tailor-bullets to draft tailored bullets for a named experience or project in my application CV."
