@@ -33,19 +33,25 @@ Never add filler, duplicate another bullet, or invent context to approach a targ
 ## Layout modes
 
 - `one-line`: hard maximum 112 visible characters, with a preferred range of 105–112 only when the content supports it.
-- `preserve-lines`: actual rendered line count takes priority over character equality.
-- `n-lines`: use the requested line count; there is no universal character limit for multi-line bullets.
-- `balanced-lines`: keep comparable bullets at the intended common rendered line count and balance their final-line fill. Use an explicitly approved bullet as the visual reference; otherwise aim for each multi-line bullet's final line to occupy 70–90% of the available text width.
+- `preserve-lines`: preserve a current one- or two-line footprint; compress any bullet currently exceeding two lines to two.
+- `n-lines`: accept only one or two as the requested line count; reject larger values.
+- `balanced-lines`: create a controlled ragged-right silhouette across the block. Use supplied examples as a rhythm reference; otherwise prefer mostly two-line bullets whose final lines end at naturally varied positions.
 - `page-fit`: shorten the lowest-value wording first while preserving the number and substance of achievements.
 - Bold spans are wider than surrounding text in many fonts. Re-render after fitting a bolded bullet; character count alone is insufficient.
+- Every mode has a hard maximum of two rendered lines per bullet. A three-line bullet always fails verification and must never be applied.
 
-## Rendered balance
+## Rendered balance and visual roundness
 
 - Measure visual footprint from the compiled LaTeX output or a supplied screenshot, not from raw or visible character count. Proportional glyph widths and word-boundary wrapping make equally long strings occupy different space.
-- For `balanced-lines`, first match the reference or intended rendered line count. Then compare the final line's occupied width with the available bullet text width.
-- When the user identifies an ideal reference bullet, prefer a final-line fill within approximately 10 percentage points of that reference over the generic 70–90% range.
-- Avoid a dangling final line below roughly 60% fill when supported wording can rebalance it without changing the primary accomplishment.
-- Do not force every bullet to an identical width. Consistent line count and broadly similar final-line fill are the goal; natural variation is preferable to filler or lost meaning.
+- Judge `balanced-lines` at block level. Aim for a rounded, ragged-right edge: first and intermediate lines usually fill most of the measure, while final lines taper to different natural endpoints.
+- Use two rendered lines for most bullets. Keep a complete one-line bullet when it is genuinely strong and concise; use one-line bullets sparingly and prefer them near the end of a block when that creates a clean taper.
+- Never allow a third rendered line. If the supported result and mechanism cannot fit within two lines after three careful revisions, report the content conflict instead of dropping a material fact or applying the draft.
+- Treat roughly 35–90% final-line fill as a useful visual range, not a hard quota. A shorter ending can look intentional when it contains a complete phrase; avoid orphaned words or fragments below roughly 25% when supported rewording can fix them.
+- Preserve contrast: include both shorter and fuller endings when the content permits, and avoid making several bullets terminate at nearly the same horizontal position.
+- A slightly shorter final bullet often closes a block cleanly, but do not force the section into a descending staircase or mechanical short–long alternation.
+- Keep ordinary interword spacing and let LaTeX wrap naturally. Never insert manual line breaks, repeated spaces, non-breaking spaces, or horizontal-spacing commands merely to sculpt the silhouette.
+- Preserve the template's font, margins, indentation, bullet spacing, and hanging indent; fitting this mode changes bullet wording only.
+- Do not force every bullet to an identical width. Controlled variation is preferable to filler, weakened claims, or lost meaning.
 - Character ceilings remain safety constraints, not proof of visual balance. A bullet cannot pass `balanced-lines` solely because its character count resembles the reference.
 
 ## Style and LaTeX

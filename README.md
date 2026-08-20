@@ -183,18 +183,18 @@ Use $cv-fit-bullets on main.tex for experience "Example Company". Draft one-line
 Supported modes are:
 
 - `one-line`: default hard ceiling of 112 visible characters;
-- `preserve-lines`: keep each bullet's rendered line count;
-- `n-lines`: target a user-specified number of lines;
-- `balanced-lines`: match a common rendered line count and keep multi-line bullets' final lines visually balanced, using an approved bullet as the reference when provided; and
+- `preserve-lines`: keep a one- or two-line footprint and compress longer source bullets to two;
+- `n-lines`: target a user-specified one- or two-line footprint;
+- `balanced-lines`: create a rounded, ragged-right silhouette with mostly two-line bullets, varied final-line lengths, and occasional strong one-line bullets; and
 - `page-fit`: keep the CV within its current page limit.
 
 For example:
 
 ```text
-Use $cv-fit-bullets on main.tex for experience "Example Company" in balanced-lines mode. Use bullet 2 as the visual reference and keep the bullets at two rendered lines.
+Use $cv-fit-bullets on main.tex for experience "Example Company" in balanced-lines mode. Use the supplied screenshots as the visual-rhythm reference and preserve a natural mix of final-line lengths.
 ```
 
-The skill creates a new draft and preview. Character count is only a fallback: proportional fonts, word boundaries, and `\textbf{}` can change actual wrapping. In `balanced-lines` mode, compile and inspect the preview and aim for multi-line bullets' final lines to occupy roughly 70–90% of the available width. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
+The skill creates a new draft and preview. Every mode has a strict two-rendered-line maximum; a three-line bullet must never be applied. Character count is only a fallback because proportional fonts, word boundaries, and `\textbf{}` can change actual wrapping. In `balanced-lines` mode, compile and inspect the block as a whole: most bullets should occupy two lines, their final lines should taper to varied natural endpoints, and rare one-line bullets should remain concise rather than being padded. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
 
 ## Tailoring to a job
 

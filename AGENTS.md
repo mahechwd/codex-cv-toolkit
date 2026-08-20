@@ -17,6 +17,7 @@
 - Keep one primary accomplishment per bullet. Split independently valuable achievements across existing slots when possible, without changing the block's `\resumeItem` count.
 - Every build bullet must pass both audience checks: an HR recruiter understands the accomplishment and value from the opening clause, while a senior engineer sees one selective, concrete technical method or decision. Never substitute stack density for engineering credibility.
 - Fitting, tailoring, and bolding may still produce preview drafts. The producing skill may apply its own exact draft through `python3 scripts/cv_drafts.py apply` only after the user explicitly asks it to do so; no separate apply skill is used.
+- `$cv-fit-bullets` has a hard maximum of two rendered lines per bullet in every mode. Never approve or apply a three-line fitted bullet; if rendering is unavailable, leave the result as an unapplied estimate.
 - Preserve commands, bullet count, order, headings, dates, chronology, comments, whitespace outside the selected bullet bodies, and every unrelated byte of the CV.
 - Treat `main.tex` as canonical. Job-specific tailoring targets only a private `applications/<slug>/main.tex` copy.
 - Scoring is read-only and must not modify the CV or draft.
