@@ -5,3 +5,13 @@ cv-context/
 cv_main.tex
 main.tex
 job-description.txt
+
+# Keep every company-specific tailored CV and scorecard local only.
+applications/
+
+# Keep generated drafts, previews, PDFs, and recovery backups local only.
+drafts/
+
+# Ignore local Python bytecode produced by validation helpers.
+__pycache__/
+*.pyc
