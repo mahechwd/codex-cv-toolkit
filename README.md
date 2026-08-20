@@ -24,8 +24,8 @@ It creates the following ignored private inputs when they are missing and never 
 |---|---|
 | `main.tex` | Paste your complete LaTeX CV, including its existing Experience and Projects headings and `\resumeItem{...}` slots |
 | `job-description.txt` | Paste one complete job description, replacing all previous placeholder or vacancy text |
-| `cv-context/experience/<company-slug>/` | Add relevant `.md`, `.txt`, and `.pdf` evidence for that employment entry |
-| `cv-context/projects/<project-slug>/` | Add relevant `.md`, `.txt`, and `.pdf` evidence for that project |
+| `cv-context/experience/<company-slug>/` | Optionally add `.md`, `.txt`, and `.pdf` evidence for that employment entry |
+| `cv-context/projects/<project-slug>/` | Optionally add `.md`, `.txt`, and `.pdf` evidence for that project |
 
 Then open the repository root in Codex and invoke the appropriate skill. For example:
 
@@ -47,7 +47,7 @@ If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the 
 
 | Skill | Purpose | Output |
 |---|---|---|
-| `$cv-build-bullets` | Fill empty slots or strengthen existing evidence-backed bullets without a default length limit | Draft JSON |
+| `$cv-build-bullets` | Rewrite pasted bullets in chat, or fill/strengthen a named CV block without a default length limit | Chat proposal or draft JSON |
 | `$cv-fit-bullets` | Compress or expand one block to a line-count or page footprint | Draft JSON + preview |
 | `$cv-tailor-bullets` | Add only job-relevant terms supported by evidence | Draft JSON + preview |
 | `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Draft JSON + preview |
@@ -114,9 +114,18 @@ cv-context/experience/example-company/
 cv-context/projects/example-project/
 ```
 
-Folder names should be lowercase slugs of the company or project name in `main.tex`. Add non-empty `.md`, `.txt`, or `.pdf` sources with facts you can defend in an interview: contribution, mechanism, technology, scale, tests, reliability, security, performance, constraints, and outcomes.
+Folder names should be lowercase slugs of the company or project name in `main.tex`. You may add non-empty `.md`, `.txt`, or `.pdf` sources with facts you can defend in an interview: contribution, mechanism, technology, scale, tests, reliability, security, performance, constraints, and outcomes.
 
-The build skill rereads every supported file in the selected folder. Existing CV wording is useful evidence for rewording, but it never permits invented metrics, technologies, ownership, or impact.
+Context is optional. `$cv-build-bullets` does not inspect `cv-context/` unless you explicitly ask it to use a named file or target folder. A general request to use a folder reads its `.md` and `.txt` evidence only; PDFs are opened only when you explicitly ask to read PDFs or name the exact PDF. Existing or pasted bullet wording and facts in your prompt are sufficient evidence for rewording, but never permit invented metrics, technologies, ownership, or impact.
+
+To improve bullets pasted directly into chat without touching the repository:
+
+```text
+Use $cv-build-bullets to strengthen the bullets below using only their existing facts. Keep the same bullet count and do not read any context files.
+
+\resumeItem{Built ...}
+\resumeItem{Improved ...}
+```
 
 ## Select exactly what to edit
 
@@ -133,7 +142,7 @@ experience: Example Company — Software Engineer (4 bullets)
 project: Example Project — Technology Stack (4 bullets)
 ```
 
-Every writing request should name:
+Every writing request that targets a CV file should name:
 
 - the CV path;
 - `experience` or `project`; and
@@ -148,6 +157,8 @@ This prevents an agent from silently choosing the wrong section.
 ```text
 Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-context folder. Fill empty slots or strengthen existing bullets, but create a draft only.
 ```
+
+Omit “Read its cv-context folder” to draft from the block's current bullets and facts in your prompt only. Add “also read `<exact-file>.pdf`” only when that PDF is genuinely needed.
 
 The skill creates an ignored file such as:
 
@@ -301,7 +312,7 @@ Inspect the PDF for line wrapping, page count, spacing, and machine-readable tex
 
 ## Truth policy
 
-- Valid sources are current bullet wording, the relevant `cv-context/` folder, and explicit user facts.
+- Valid sources are pasted or current bullet wording, explicit user facts, and only the context files you explicitly ask the skill to read.
 - A skills-section keyword alone does not prove use in a specific achievement.
 - Unsupported job requirements are reported gaps, not text to insert.
 - Never invent metrics, scale, technologies, ownership, business impact, or causality.

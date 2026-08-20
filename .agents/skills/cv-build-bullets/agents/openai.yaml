@@ -1,4 +1,4 @@
 interface:
   display_name: "CV Build Bullets"
-  short_description: "Draft strong evidence-backed software CV bullets"
-  default_prompt: "Use $cv-build-bullets to draft content-first bullets for a named experience or project without a length limit."
+  short_description: "Draft or strengthen truthful software CV bullets"
+  default_prompt: "Use $cv-build-bullets to strengthen the bullets I paste using only their existing facts. Do not read context files unless I ask."

@@ -5,12 +5,14 @@
 - Treat `main.tex`, `job-description.txt`, and `cv-context/` as the user's actual private inputs. Never redirect them to the tracked `*.example.*` templates.
 - Keep personal CVs, evidence, job descriptions, application copies, drafts, previews, and backups in the ignored paths documented in `README.md`.
 - Never copy personal or employer-confidential material into tracked examples.
-- Use only current bullet wording, the relevant `cv-context/` files, and explicit user facts as claim evidence. Never invent metrics, technologies, scale, ownership, outcomes, or causality.
+- Use only pasted or current bullet wording, explicit user facts, and context files the user explicitly authorises as claim evidence. Never invent metrics, technologies, scale, ownership, outcomes, or causality.
+- Do not inspect or read `cv-context/` merely because it exists. Read context only when the user asks. Never open a PDF unless the user explicitly asks to read PDFs or names the exact PDF.
 
 ## Bullet workflow
 
-- Every bullet-writing request must identify one CV path, one kind (`experience` or `project`), and one exact target name from `python3 scripts/cv_drafts.py list <cv-path>`.
-- Building, strengthening, fitting, tailoring, and bolding must produce or revise a JSON file under ignored `drafts/`. These stages must not edit a `.tex` CV.
+- Every bullet-writing request that targets a CV file must identify one CV path, one kind (`experience` or `project`), and one exact target name from `python3 scripts/cv_drafts.py list <cv-path>`.
+- Prompt-only building or strengthening may rewrite bullets pasted in chat without repository discovery or a JSON draft. Preserve pasted `\resumeItem{...}` wrappers and change only their contents.
+- CV-targeted building or strengthening, fitting, tailoring, and bolding must produce or revise a JSON file under ignored `drafts/`. These stages must not edit a `.tex` CV.
 - A request to generate or revise unseen wording is not approval to apply it. Show the resulting draft and wait for explicit approval of that exact file.
 - Exact user-supplied bullets accompanied by an explicit request to apply them may be drafted and applied in the same task because the wording is already visible and approved.
 - Apply approved bullet drafts only through `$cv-apply-bullets` and `python3 scripts/cv_drafts.py apply`. Never bypass the helper with a manual CV edit.

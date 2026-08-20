@@ -2,7 +2,8 @@
 
 ## Evidence and integrity
 
-- Use only facts supported by the selected evidence folder or explicitly supplied by the user.
+- Use only facts supported by pasted or current bullet wording, facts explicitly supplied by the user, or context sources the user explicitly authorised the skill to read.
+- Treat optional context as corroboration or additional evidence, not as a mandatory input.
 - Never invent or strengthen metrics, scale, ownership, technologies, outcomes, or business impact.
 - Omit unsupported metrics; never insert placeholders such as `[X%]`.
 - Resolve material conflicts before editing.
@@ -29,6 +30,7 @@
 ## LaTeX
 
 - Draft only the inner content for each existing `\resumeItem{...}` slot; never include the wrapper in `proposed_bullets`.
+- In prompt-only mode, preserve any pasted `\resumeItem{...}` wrappers and modify only their inner text.
 - Escape literal `%`, `&`, `_`, `#`, and `$` characters.
 - Keep each proposal as one logical bullet and leave the draft status unchanged.
 
