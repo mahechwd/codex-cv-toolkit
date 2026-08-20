@@ -1,6 +1,10 @@
 # Keep all company names and source material local only.
 cv-context/
 
+# Treat the tracked example tree as read-only; hide any new personal files
+# accidentally added beneath it. Existing tracked templates remain tracked.
+cv-context.example/**
+
 # Keep personal CV and vacancy content local only.
 cv_main.tex
 main.tex

@@ -39,6 +39,8 @@ Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-
 git restore main.example.tex job-description.example.txt cv-context.example
 ```
 
+New untracked files accidentally placed under `cv-context.example/` are ignored as a privacy backstop, but the correct location for all real evidence remains `cv-context/experience/<company-slug>/` or `cv-context/projects/<project-slug>/`.
+
 If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the setup command prints `kept existing` and leaves their contents untouched.
 
 ## What is included
