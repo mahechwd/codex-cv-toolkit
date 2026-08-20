@@ -1,6 +1,6 @@
 ---
 name: cv-build-bullets
-description: Write or strengthen concise, XYZ-style software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or to edit one named Experience or Projects block directly in a LaTeX CV. Defaults to a 220-visible-character ceiling. Do not read context files or PDFs unless explicitly requested.
+description: Write or strengthen concise, recruiter-readable and technically credible XYZ-style software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or to edit one named Experience or Projects block directly in a LaTeX CV. Defaults to a 220-visible-character ceiling and a 160–170-character block-average target. Do not read context files or PDFs unless explicitly requested.
 ---
 
 # CV build bullets
@@ -49,16 +49,21 @@ Create the strongest truthful bullets before layout compression. Work in either 
 1. If all existing slots are empty, create distinct achievements from the available evidence. If any contain text, strengthen or reword them using their established claims and any authorised evidence; retain strong wording that does not need change.
 2. Decompose the evidence into atomic achievements before assigning it to slots. Each bullet should communicate one main outcome and one supporting technical method.
 3. When one source bullet contains two independently valuable achievements, split them across two existing slots when the block has capacity. Reuse an empty, weak, or redundant slot; never add a new `\resumeItem` command.
-4. Select distinct, material achievements for exactly the available bullet slots.
-5. Track the source of every claim, including technologies, metrics, ownership, scale, and outcomes.
-6. Apply every content and length rule in `references/building-rules.md`.
-7. Escape LaTeX-sensitive characters correctly inside each existing wrapper.
+4. Write for two audiences: an HR recruiter must understand the accomplishment and value from the opening clause, while a senior software engineer must see credible technical evidence in the method.
+5. Select distinct, material achievements for exactly the available bullet slots.
+6. Track the source of every claim, including technologies, metrics, ownership, scale, and outcomes.
+7. Apply every content and length rule in `references/building-rules.md`.
+8. Escape LaTeX-sensitive characters correctly inside each existing wrapper.
 
 ## Verify and report
 
 - Rerun `python3 scripts/cv_drafts.py list <cv-path>` and `python3 scripts/cv_tex.py <cv-path>` after editing.
-- Confirm the selected bullet count is unchanged, every bullet is non-empty and at most 220 visible characters, the block average is normally near 170–180 characters, LaTeX is balanced, and no content outside the selected `\resumeItem{...}` bodies changed. Correct the edit immediately if any invariant fails.
+- Run `python3 scripts/cv_drafts.py check --cv <cv-path> --kind <kind> --target <exact-name> --max-chars 220 --max-average 170`. Use the user's explicit limits instead when supplied.
+- Treat this target-specific check as a completion gate. If it exits non-zero, shorten the failing bullets and rerun it until it passes; never report a completed CV edit while the check fails.
+- Confirm the selected bullet count is unchanged, every bullet is non-empty, LaTeX is balanced, and no content outside the selected `\resumeItem{...}` bodies changed. Correct the edit immediately if any invariant fails.
+- Aim for a natural block average of 160–170 visible characters. An average below 160 is acceptable when the bullets are already complete and strong; never pad them to reach the range.
 - Recheck bullets near 220 characters for multiple achievements, repeated context, or detachable implementation detail. Split or tighten them when another existing slot can carry a distinct achievement.
+- Apply a two-audience test to every final bullet: a general recruiter can explain what changed and why it mattered, and a senior engineer can identify the concrete method or engineering decision. Rewrite bullets that pass only one side.
 - Re-read the final bullets and trace each material claim to current wording, prompt facts, or an explicitly authorised context source.
 - Report the CV path, target, before/after bullets, evidence actually used, bullet count, rendered character counts, and any context files intentionally skipped. Do not imply that unrequested context was inspected.
 - State explicitly that the bullets are content-first and have not been fitted to a page unless the user also requested and authorised that separate work.

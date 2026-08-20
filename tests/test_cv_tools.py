@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -257,6 +258,109 @@ class CvDraftTests(unittest.TestCase):
             draft_path.write_text(json.dumps(draft), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "bullet count"):
                 CV_DRAFTS.apply_draft(cv, draft_path)
+
+    def test_target_length_check_passes_within_both_limits(self) -> None:
+        source = CV_SOURCE.replace(
+            r"\resumeItem{}",
+            r"\resumeItem{Added contract tests for 12 API endpoints.}",
+            1,
+        )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cv = Path(temporary_directory) / "main.tex"
+            cv.write_text(source, encoding="utf-8")
+            check = CV_DRAFTS.check_target_lengths(
+                cv,
+                "experience",
+                "Example Company",
+            )
+
+        self.assertTrue(check.passed)
+        self.assertEqual((30, 42), check.bullet_characters)
+        self.assertEqual(36, check.average_characters)
+
+    def test_target_length_check_rejects_bullet_over_hard_maximum(self) -> None:
+        long_bullet = "A" * 221
+        source = CV_SOURCE.replace(
+            "Built a reliable API using Go.",
+            long_bullet,
+        ).replace(r"\resumeItem{}", r"\resumeItem{Short supported result.}", 1)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cv = Path(temporary_directory) / "main.tex"
+            cv.write_text(source, encoding="utf-8")
+            check = CV_DRAFTS.check_target_lengths(
+                cv,
+                "experience",
+                "Example Company",
+            )
+
+        self.assertFalse(check.passed)
+        self.assertIn("bullet 1 is 221 characters; maximum is 220", check.violations)
+
+    def test_target_length_check_rejects_average_over_limit(self) -> None:
+        source = CV_SOURCE.replace(
+            "Built a reliable API using Go.",
+            "A" * 171,
+        ).replace(r"\resumeItem{}", rf"\resumeItem{{{'B' * 171}}}", 1)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cv = Path(temporary_directory) / "main.tex"
+            cv.write_text(source, encoding="utf-8")
+            check = CV_DRAFTS.check_target_lengths(
+                cv,
+                "experience",
+                "Example Company",
+            )
+
+        self.assertFalse(check.passed)
+        self.assertEqual((171, 171), check.bullet_characters)
+        self.assertIn(
+            "block average is 171.0 characters; maximum is 170",
+            check.violations,
+        )
+
+    def test_target_length_check_ignores_other_cv_blocks(self) -> None:
+        source = CV_SOURCE.replace(
+            r"\resumeItem{}",
+            r"\resumeItem{Added contract tests for 12 API endpoints.}",
+            1,
+        ).replace("Processed 10,000 records with Python.", "P" * 300)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cv = Path(temporary_directory) / "main.tex"
+            cv.write_text(source, encoding="utf-8")
+            check = CV_DRAFTS.check_target_lengths(
+                cv,
+                "experience",
+                "Example Company",
+            )
+
+        self.assertTrue(check.passed)
+
+    def test_target_length_check_command_exits_unsuccessfully_on_failure(self) -> None:
+        source = CV_SOURCE.replace(
+            "Built a reliable API using Go.",
+            "A" * 221,
+        ).replace(r"\resumeItem{}", r"\resumeItem{Short supported result.}", 1)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cv = Path(temporary_directory) / "main.tex"
+            cv.write_text(source, encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "cv_drafts.py"),
+                    "check",
+                    "--cv",
+                    str(cv),
+                    "--kind",
+                    "experience",
+                    "--target",
+                    "Example Company",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(4, result.returncode)
+        self.assertIn("result: FAIL", result.stdout)
 
 
 class PrepareApplicationTests(unittest.TestCase):

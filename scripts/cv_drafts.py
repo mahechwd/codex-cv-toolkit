@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create, preview, and safely apply approval-gated CV bullet drafts."""
+"""Inspect CV targets, enforce bullet limits, and manage review drafts."""
 
 from __future__ import annotations
 
@@ -47,6 +47,21 @@ class CvTarget:
     start: int
     end: int
     bullets: tuple[BulletSpan, ...]
+
+
+@dataclass(frozen=True)
+class TargetLengthCheck:
+    kind: str
+    name: str
+    bullet_characters: tuple[int, ...]
+    average_characters: float
+    max_characters: int
+    max_average: float
+    violations: tuple[str, ...]
+
+    @property
+    def passed(self) -> bool:
+        return not self.violations
 
 
 def read_utf8(path: Path) -> str:
@@ -261,6 +276,67 @@ def canonicalise_kind(kind: str) -> str:
     if normalised in {"project", "projects"}:
         return "project"
     raise ValueError("kind must be experience or project")
+
+
+def check_target_lengths(
+    cv_path: Path,
+    kind: str,
+    target_name: str,
+    max_characters: int = 220,
+    max_average: float = 170,
+) -> TargetLengthCheck:
+    if max_characters < 1:
+        raise ValueError("max characters must be a positive integer")
+    if max_average <= 0:
+        raise ValueError("max average must be positive")
+
+    target = select_target(cv_path, kind, target_name)
+    if not target.bullets:
+        raise ValueError("target has no active resumeItem slots")
+
+    counts = tuple(bullet.characters for bullet in target.bullets)
+    average = sum(counts) / len(counts)
+    violations: list[str] = []
+    for index, bullet in enumerate(target.bullets, start=1):
+        if not bullet.rendered:
+            violations.append(f"bullet {index} is empty")
+        if bullet.characters > max_characters:
+            violations.append(
+                f"bullet {index} is {bullet.characters} characters; "
+                f"maximum is {max_characters}"
+            )
+    if average > max_average:
+        violations.append(
+            f"block average is {average:.1f} characters; maximum is {max_average:g}"
+        )
+
+    return TargetLengthCheck(
+        kind=target.kind,
+        name=target.name,
+        bullet_characters=counts,
+        average_characters=average,
+        max_characters=max_characters,
+        max_average=max_average,
+        violations=tuple(violations),
+    )
+
+
+def format_target_length_check(check: TargetLengthCheck) -> str:
+    lines = [f"target: {check.kind}:{check.name}"]
+    lines.extend(
+        f"bullet {index}: {characters} characters"
+        for index, characters in enumerate(check.bullet_characters, start=1)
+    )
+    lines.append(
+        f"average: {check.average_characters:.1f} characters "
+        f"(maximum {check.max_average:g})"
+    )
+    lines.append(
+        f"per-bullet maximum: {check.max_characters} characters"
+    )
+    lines.append(f"result: {'PASS' if check.passed else 'FAIL'}")
+    lines.extend(f"- {violation}" for violation in check.violations)
+    return "\n".join(lines)
 
 
 def target_fingerprint(source: str, target: CvTarget) -> str:
@@ -511,6 +587,16 @@ def main() -> int:
     list_parser.add_argument("cv", type=Path)
     list_parser.add_argument("--json", action="store_true")
 
+    check_parser = subparsers.add_parser(
+        "check",
+        help="Check one target's visible bullet lengths",
+    )
+    check_parser.add_argument("--cv", type=Path, required=True)
+    check_parser.add_argument("--kind", required=True)
+    check_parser.add_argument("--target", required=True)
+    check_parser.add_argument("--max-chars", type=int, default=220)
+    check_parser.add_argument("--max-average", type=float, default=170)
+
     init_parser = subparsers.add_parser("init", help="Create a non-overwriting draft")
     init_parser.add_argument("--cv", type=Path, required=True)
     init_parser.add_argument("--kind", required=True)
@@ -539,6 +625,17 @@ def main() -> int:
                 for target in targets:
                     context = f" — {target.context}" if target.context else ""
                     print(f"{target.kind}: {target.name}{context} ({len(target.bullets)} bullets)")
+        elif args.command == "check":
+            check = check_target_lengths(
+                args.cv,
+                args.kind,
+                args.target,
+                args.max_chars,
+                args.max_average,
+            )
+            print(format_target_length_check(check))
+            if not check.passed:
+                return 4
         elif args.command == "init":
             initialise_draft(args.cv, args.kind, args.target, args.output)
             print(args.output)

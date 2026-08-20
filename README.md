@@ -47,7 +47,7 @@ If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the 
 
 | Skill | Purpose | Output |
 |---|---|---|
-| `$cv-build-bullets` | Rewrite pasted bullets or directly fill/strengthen a named CV block using concise XYZ-style claims | Chat proposal or updated CV block |
+| `$cv-build-bullets` | Rewrite pasted bullets or directly fill/strengthen a named CV block using recruiter-readable, technically credible XYZ claims | Chat proposal or updated CV block |
 | `$cv-fit-bullets` | Compress or expand one block to a line-count or page footprint | Draft JSON + preview |
 | `$cv-tailor-bullets` | Add only job-relevant terms supported by evidence | Draft JSON + preview |
 | `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Draft JSON + preview |
@@ -164,8 +164,9 @@ The skill:
 - confirms one exact Experience or Projects target;
 - preserves the number and order of `\resumeItem{...}` commands;
 - replaces only their inner content;
-- keeps every bullet within 220 visible characters by default, normally averaging about 170–180 across the block;
+- keeps every bullet within 220 visible characters by default and the block average at or below 170, naturally aiming for 160–170 without padding shorter bullets;
 - splits independent achievements across existing slots rather than overloading one bullet;
+- leads with plain-English value for HR, then adds only the technical evidence needed to impress a senior engineer;
 - verifies the resulting LaTeX and visible character counts; and
 - leaves every heading, date, command, comment, and unrelated section unchanged.
 
@@ -234,6 +235,19 @@ Inspect active bullets and visible character counts:
 ```bash
 python3 scripts/cv_tex.py main.tex
 ```
+
+Enforce the build limits on one exact CV block:
+
+```bash
+python3 scripts/cv_drafts.py check \
+  --cv main.tex \
+  --kind experience \
+  --target "Example Company" \
+  --max-chars 220 \
+  --max-average 170
+```
+
+This command exits unsuccessfully if a selected bullet is empty or over 220 visible characters, or if the selected block averages more than 170. It checks only the named block.
 
 Enforce a 112-character ceiling:
 

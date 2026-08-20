@@ -13,8 +13,9 @@
 - Every bullet-writing request that targets a CV file must identify one CV path, one kind (`experience` or `project`), and one exact target name from `python3 scripts/cv_drafts.py list <cv-path>`.
 - Prompt-only building or strengthening may rewrite bullets pasted in chat without repository discovery or a JSON draft. Preserve pasted `\resumeItem{...}` wrappers and change only their contents.
 - CV-targeted `$cv-build-bullets` requests edit the named CV immediately. They must replace only the contents of existing `\resumeItem{...}` commands in the selected target and must not create a review draft or wait for approval.
-- `$cv-build-bullets` uses a default hard ceiling of 220 visible characters per bullet and aims for a natural block average around 170–180. It must not pad short complete bullets to reach that average.
+- `$cv-build-bullets` uses a default hard ceiling of 220 visible characters per bullet and a target block average of 160–170. A CV edit is incomplete until the target-specific check confirms every bullet is at most 220 and the block average is at most 170; never pad short complete bullets to reach 160.
 - Keep one primary accomplishment per bullet. Split independently valuable achievements across existing slots when possible, without changing the block's `\resumeItem` count.
+- Every build bullet must pass both audience checks: an HR recruiter understands the accomplishment and value from the opening clause, while a senior engineer sees one selective, concrete technical method or decision. Never substitute stack density for engineering credibility.
 - Fitting, tailoring, and bolding may still produce preview drafts. The producing skill may apply its own exact draft through `python3 scripts/cv_drafts.py apply` only after the user explicitly asks it to do so; no separate apply skill is used.
 - Preserve commands, bullet count, order, headings, dates, chronology, comments, whitespace outside the selected bullet bodies, and every unrelated byte of the CV.
 - Treat `main.tex` as canonical. Job-specific tailoring targets only a private `applications/<slug>/main.tex` copy.
