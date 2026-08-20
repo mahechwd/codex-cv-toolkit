@@ -1,0 +1,4 @@
+interface:
+  display_name: "CV Build Bullets"
+  short_description: "Draft strong evidence-backed software CV bullets"
+  default_prompt: "Use $cv-build-bullets to draft content-first bullets for a named experience or project without a length limit."
