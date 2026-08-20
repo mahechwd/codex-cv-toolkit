@@ -47,7 +47,7 @@ If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the 
 
 | Skill | Purpose | Output |
 |---|---|---|
-| `$cv-build-bullets` | Rewrite pasted bullets in chat, or directly fill/strengthen a named CV block without a default length limit | Chat proposal or updated CV block |
+| `$cv-build-bullets` | Rewrite pasted bullets or directly fill/strengthen a named CV block using concise XYZ-style claims | Chat proposal or updated CV block |
 | `$cv-fit-bullets` | Compress or expand one block to a line-count or page footprint | Draft JSON + preview |
 | `$cv-tailor-bullets` | Add only job-relevant terms supported by evidence | Draft JSON + preview |
 | `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Draft JSON + preview |
@@ -164,6 +164,8 @@ The skill:
 - confirms one exact Experience or Projects target;
 - preserves the number and order of `\resumeItem{...}` commands;
 - replaces only their inner content;
+- keeps every bullet within 220 visible characters by default, normally averaging about 170–180 across the block;
+- splits independent achievements across existing slots rather than overloading one bullet;
 - verifies the resulting LaTeX and visible character counts; and
 - leaves every heading, date, command, comment, and unrelated section unchanged.
 

@@ -12,20 +12,26 @@
 ## Strong technical content
 
 - Start with an accurate action verb and use concise British English.
-- Apply the XYZ principle naturally: communicate the achievement, its measured result when supported, and the technical mechanism.
+- Make the XYZ relationship explicit: state the accomplishment (X), include its measurement or scale (Y) when supported, and explain the technical method (Z).
+- Prefer compact causal forms such as “Reduced X by Y by implementing Z” or “Built Z, enabling X at Y scale”. Do not force a metric or awkward sentence order when the evidence lacks Y.
 - Lead with the most differentiating result or engineering contribution rather than a duty.
 - Name technologies when they explain how the result was achieved, not as a detached keyword list.
 - Preserve useful detail about architecture, algorithms, data, scale, reliability, performance, security, testing, automation, or ownership.
 - Give every bullet a distinct purpose and avoid repeated opening verbs, claims, metrics, and tool lists.
 - Prefer clear technical language to grandiose or unusual verbs. Avoid first-person pronouns, vague praise, filler, keyword stuffing, and unverifiable adjectives such as “top 5%”.
 - Metrics may quantify performance, scale, reliability, coverage, latency, cost, adoption, delivery, or accuracy. A bullet remains valid without a metric when its technical contribution is strong and evidence-backed.
+- Give each bullet one main accomplishment and one causal chain. Do not combine two independently valuable achievements merely because they came from the same source sentence.
+- Split separate achievements across available bullet slots when each has its own outcome, method, or evidence. Avoid joining them with “and” unless the second phrase directly completes the same mechanism or result.
 
-## Content-first length
+## Length and focus
 
-- Do not apply a default character ceiling or force a bullet into one line.
-- Retain the strongest supported causal chain even when it requires two or three rendered lines.
-- Remove genuine repetition and filler, but do not discard important mechanism merely to imitate a short final-layout bullet.
-- Use `$cv-fit-bullets` in a separate request when the user wants one-line bullets, a specific line count, or a one-page CV.
+- Use a hard ceiling of 220 visible characters per bullet, including spaces and punctuation, unless the user explicitly supplies a different limit.
+- Aim for a natural block average around 170–180 visible characters. This is a distribution target, not a minimum or a requirement for every bullet.
+- Keep a strong bullet shorter when the complete supported XYZ claim needs fewer words. Never pad with extra technologies, adjectives, or context to approach the target.
+- Allow a bullet to approach 220 only when the additional supported mechanism, constraint, scale, or outcome materially strengthens the same accomplishment.
+- Before accepting a long bullet, remove repeated context and ask whether it contains two accomplishments that should occupy separate existing slots.
+- Count rendered characters rather than LaTeX syntax: escaped forms such as `\%` and `\&` count as one visible character each, while commands such as `\textbf{}` contribute only their visible contents.
+- Use `$cv-fit-bullets` in a separate request when the user wants one-line bullets, an exact rendered line count, or a one-page CV.
 
 ## LaTeX
 

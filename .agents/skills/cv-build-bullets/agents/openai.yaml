@@ -1,4 +1,4 @@
 interface:
   display_name: "CV Build Bullets"
   short_description: "Write strong bullets directly into a LaTeX CV"
-  default_prompt: "Use $cv-build-bullets to strengthen one named block in main.tex and edit only its existing resumeItem contents."
+  default_prompt: "Use $cv-build-bullets to write concise XYZ-style bullets in one named main.tex block, keeping each within 220 visible characters."
