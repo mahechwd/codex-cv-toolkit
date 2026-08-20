@@ -1,0 +1,4 @@
+interface:
+  display_name: "CV Fit Bullets"
+  short_description: "Draft CV bullets to page and line limits"
+  default_prompt: "Use $cv-fit-bullets to draft fitted wording for a named CV experience or project."
