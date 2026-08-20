@@ -29,10 +29,10 @@
 
 ## LaTeX
 
-- Draft only the inner content for each existing `\resumeItem{...}` slot; never include the wrapper in `proposed_bullets`.
+- In CV edit mode, change only the inner content of each existing `\resumeItem{...}` slot and preserve every wrapper and surrounding byte.
 - In prompt-only mode, preserve any pasted `\resumeItem{...}` wrappers and modify only their inner text.
 - Escape literal `%`, `&`, `_`, `#`, and `$` characters.
-- Keep each proposal as one logical bullet and leave the draft status unchanged.
+- Keep each replacement as one logical bullet and preserve the existing bullet count and order.
 
 ## Guidance basis
 

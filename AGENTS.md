@@ -12,11 +12,9 @@
 
 - Every bullet-writing request that targets a CV file must identify one CV path, one kind (`experience` or `project`), and one exact target name from `python3 scripts/cv_drafts.py list <cv-path>`.
 - Prompt-only building or strengthening may rewrite bullets pasted in chat without repository discovery or a JSON draft. Preserve pasted `\resumeItem{...}` wrappers and change only their contents.
-- CV-targeted building or strengthening, fitting, tailoring, and bolding must produce or revise a JSON file under ignored `drafts/`. These stages must not edit a `.tex` CV.
-- A request to generate or revise unseen wording is not approval to apply it. Show the resulting draft and wait for explicit approval of that exact file.
-- Exact user-supplied bullets accompanied by an explicit request to apply them may be drafted and applied in the same task because the wording is already visible and approved.
-- Apply approved bullet drafts only through `$cv-apply-bullets` and `python3 scripts/cv_drafts.py apply`. Never bypass the helper with a manual CV edit.
-- The apply step may replace only the contents of existing `\resumeItem{...}` commands in the selected target. Preserve commands, bullet count, order, headings, dates, chronology, and every unrelated byte of the CV.
+- CV-targeted `$cv-build-bullets` requests edit the named CV immediately. They must replace only the contents of existing `\resumeItem{...}` commands in the selected target and must not create a review draft or wait for approval.
+- Fitting, tailoring, and bolding may still produce preview drafts. The producing skill may apply its own exact draft through `python3 scripts/cv_drafts.py apply` only after the user explicitly asks it to do so; no separate apply skill is used.
+- Preserve commands, bullet count, order, headings, dates, chronology, comments, whitespace outside the selected bullet bodies, and every unrelated byte of the CV.
 - Treat `main.tex` as canonical. Job-specific tailoring targets only a private `applications/<slug>/main.tex` copy.
 - Scoring is read-only and must not modify the CV or draft.
 

@@ -1,6 +1,6 @@
 ---
 name: cv-bold-highlights
-description: Draft sparse LaTeX textbf emphasis for one named CV bullet block's most important existing metrics and supported technologies without changing visible wording. Produces a review file and preview, never edits the CV.
+description: Draft sparse LaTeX textbf emphasis for one named CV bullet block's most important existing metrics and supported technologies without changing visible wording. Produces a preview and may apply its own exact draft when explicitly requested.
 ---
 
 # CV bold highlights
@@ -32,4 +32,4 @@ Add restrained `\textbf{...}` emphasis while keeping the visible CV text identic
 
 ## Report
 
-List the CV, target, draft, and preview paths; each proposed bold span and why it is scan-worthy; confirmation that visible wording and bullet count are unchanged; and visual-verification status. Applying requires separate explicit approval through `$cv-apply-bullets`.
+List the CV, target, draft, and preview paths; each proposed bold span and why it is scan-worthy; confirmation that visible wording and bullet count are unchanged; and visual-verification status. If the user explicitly asks this skill to apply that exact draft, show it once, set its status to `approved`, and run `python3 scripts/cv_drafts.py apply`; do not require another skill.

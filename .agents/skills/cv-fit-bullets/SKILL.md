@@ -1,6 +1,6 @@
 ---
 name: cv-fit-bullets
-description: Draft compressed or expanded wording for one named LaTeX CV bullet block to meet a one-line, multi-line, or page footprint without changing facts. Produces a review file and preview, never edits the CV.
+description: Draft compressed or expanded wording for one named LaTeX CV bullet block to meet a one-line, multi-line, or page footprint without changing facts. Produces a preview and may apply its own exact draft when explicitly requested.
 ---
 
 # CV fit bullets
@@ -43,4 +43,4 @@ Fit selected bullets to the requested rendered space while preserving their stro
 
 ## Report
 
-List the draft and preview paths, CV path, target, mode, proposed changes, before/after visible character counts, facts deliberately preserved, facts removed as redundant context, final rendered line counts when verified, and page count when relevant. Applying requires separate explicit approval through `$cv-apply-bullets`.
+List the draft and preview paths, CV path, target, mode, proposed changes, before/after visible character counts, facts deliberately preserved, facts removed as redundant context, final rendered line counts when verified, and page count when relevant. If the user explicitly asks this skill to apply that exact draft, show it once, set its status to `approved`, and run `python3 scripts/cv_drafts.py apply`; do not require another skill.

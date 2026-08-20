@@ -1,14 +1,14 @@
 # Codex CV Toolkit
 
-A privacy-conscious, approval-gated toolkit for building and tailoring a LaTeX software-engineering CV with repository-scoped Codex skills.
+A privacy-conscious toolkit for building and tailoring a LaTeX software-engineering CV with repository-scoped Codex skills.
 
 The central rule is simple:
 
 ```text
-evidence → draft JSON → human review → explicit approval → guarded LaTeX apply
+facts or optional evidence → direct \resumeItem edit → review main.tex → request another revision
 ```
 
-Writing skills never edit a CV. `$cv-apply-bullets` is the only bullet-mutation workflow, and its deterministic helper replaces only the contents of existing `\resumeItem{...}` commands in one named Experience or Projects block.
+`$cv-build-bullets` edits one named Experience or Projects block immediately and may replace only the contents of its existing `\resumeItem{...}` commands. Layout-sensitive skills may still create previews, but each producing skill can apply its own reviewed result; there is no separate apply skill.
 
 ## Start here: where your content goes
 
@@ -30,7 +30,7 @@ It creates the following ignored private inputs when they are missing and never 
 Then open the repository root in Codex and invoke the appropriate skill. For example:
 
 ```text
-Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-context folder and create a draft only.
+Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-context folder and update only its resumeItem contents now.
 ```
 
 `main.example.tex`, `job-description.example.txt`, and `cv-context.example/` are tracked public templates used to initialise a new clone. Do not paste personal information into them, and do not delete them during normal use. Because they are tracked, deleting one correctly appears in Git as an uncommitted deletion. Restore an accidental deletion with:
@@ -47,21 +47,20 @@ If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the 
 
 | Skill | Purpose | Output |
 |---|---|---|
-| `$cv-build-bullets` | Rewrite pasted bullets in chat, or fill/strengthen a named CV block without a default length limit | Chat proposal or draft JSON |
+| `$cv-build-bullets` | Rewrite pasted bullets in chat, or directly fill/strengthen a named CV block without a default length limit | Chat proposal or updated CV block |
 | `$cv-fit-bullets` | Compress or expand one block to a line-count or page footprint | Draft JSON + preview |
 | `$cv-tailor-bullets` | Add only job-relevant terms supported by evidence | Draft JSON + preview |
 | `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Draft JSON + preview |
 | `$cv-score` | Score ATS readiness and hiring-manager fit against a job description out of 100 | Read-only scorecard |
-| `$cv-apply-bullets` | Apply one exact, explicitly approved draft | Selected CV block + backup |
 
-There is intentionally no all-in-one `customise-cv` skill. Separating content, layout, job tailoring, formatting, scoring, and mutation makes each decision reviewable.
+There is intentionally no all-in-one `customise-cv` skill. Content, layout, job tailoring, formatting, and scoring remain separate concerns, but applying an edit does not require a separate skill.
 
 ## Repository layout
 
 ```text
 .
 ├── .agents/skills/          # Reusable repository-scoped workflows
-├── AGENTS.md                # Repo-wide privacy and approval guardrails
+├── AGENTS.md                # Repo-wide privacy and edit-scope guardrails
 ├── scripts/
 │   ├── cv_drafts.py         # Target discovery, draft, preview, guarded apply
 │   ├── cv_tex.py            # Visible-text and bullet-count checks
@@ -150,68 +149,25 @@ Every writing request that targets a CV file should name:
 
 This prevents an agent from silently choosing the wrong section.
 
-## Approval-gated workflow
+## Build directly in `main.tex`
 
-### 1. Draft content
-
-```text
-Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-context folder. Fill empty slots or strengthen existing bullets, but create a draft only.
-```
-
-Omit “Read its cv-context folder” to draft from the block's current bullets and facts in your prompt only. Add “also read `<exact-file>.pdf`” only when that PDF is genuinely needed.
-
-The skill creates an ignored file such as:
+Name the exact block and ask the skill to edit it:
 
 ```text
-drafts/build/example-company.json
+Use $cv-build-bullets on main.tex for experience "Example Company". Read its cv-context folder. Fill empty slots or strengthen existing bullets, and edit main.tex now.
 ```
 
-It preserves the active slot count and records the current block fingerprint, existing bullets, proposed bullets, and evidence paths.
+Omit “Read its cv-context folder” to work from the block's current bullets and facts in your prompt only. Add “also read `<exact-file>.pdf`” only when that PDF is genuinely needed.
 
-### 2. Review the proposal
+The skill:
 
-```bash
-python3 scripts/cv_drafts.py show drafts/build/example-company.json
-```
+- confirms one exact Experience or Projects target;
+- preserves the number and order of `\resumeItem{...}` commands;
+- replaces only their inner content;
+- verifies the resulting LaTeX and visible character counts; and
+- leaves every heading, date, command, comment, and unrelated section unchanged.
 
-Ask for revisions through the producing skill until the proposed bullets are right. The source CV remains unchanged.
-
-To inspect a complete temporary TeX document before approval:
-
-```bash
-python3 scripts/cv_drafts.py preview \
-  --cv main.tex \
-  --draft drafts/build/example-company.json \
-  --output drafts/previews/example-company.tex
-```
-
-### 3. Approve and apply
-
-Approval must identify the exact draft:
-
-```text
-I approve drafts/build/example-company.json. Use $cv-apply-bullets to apply it.
-```
-
-The apply workflow changes the draft status to `approved`, then runs:
-
-```bash
-python3 scripts/cv_drafts.py apply \
-  --cv main.tex \
-  --draft drafts/build/example-company.json
-```
-
-The helper refuses to apply when:
-
-- the draft is not approved;
-- the Experience or Projects target is missing or ambiguous;
-- the selected source block changed after drafting;
-- the bullet count changed;
-- a proposal is empty or contains a structural CV command;
-- braces are unbalanced or `%` is unescaped; or
-- the recorded CV path does not match the requested CV.
-
-Before the atomic write, it creates a recovery copy under `drafts/backups/`. Only the inner byte ranges of the selected block's existing `\resumeItem{...}` commands are replaced.
+Review the result in `main.tex`. If you dislike the wording, tell `$cv-build-bullets` what to change and it will edit the same block again.
 
 ## Fitting bullets
 
@@ -228,7 +184,7 @@ Supported modes are:
 - `n-lines`: target a user-specified number of lines; and
 - `page-fit`: keep the CV within its current page limit.
 
-The skill creates a new draft and preview. Character count is only a fallback: proportional fonts and `\textbf{}` can change actual wrapping, so compile and inspect the preview whenever a LaTeX toolchain is available.
+The skill creates a new draft and preview. Character count is only a fallback: proportional fonts and `\textbf{}` can change actual wrapping, so compile and inspect the preview whenever a LaTeX toolchain is available. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
 
 ## Tailoring to a job
 
@@ -259,7 +215,7 @@ Tailor one named block at a time:
 Use $cv-tailor-bullets on applications/example-company-software-engineer/main.tex for experience "Example Company" against its job description. Create a draft only.
 ```
 
-Supported equivalents and keywords may be proposed only when the relevant evidence or established bullet supports the same claim. Unsupported requirements remain honest gaps. Apply each approved draft separately, then rescore with the same `$cv-score` rubric.
+Supported equivalents and keywords may be proposed only when the relevant evidence or established bullet supports the same claim. Unsupported requirements remain honest gaps. Ask `$cv-tailor-bullets` to apply its exact reviewed draft, then rescore with the same `$cv-score` rubric.
 
 ## Sparse bold highlights
 
@@ -267,7 +223,7 @@ Supported equivalents and keywords may be proposed only when the relevant eviden
 Use $cv-bold-highlights on applications/example-company-software-engineer/main.tex for experience "Example Company". Create a draft only.
 ```
 
-This stage may propose forms such as `\textbf{30\%}` or `\textbf{Elasticsearch}` while keeping visible wording identical. It defaults to one meaningful bold span per bullet and leaves low-signal bullets unbolded. Apply only after reviewing the preview because bold glyphs can change wrapping.
+This stage may propose forms such as `\textbf{30\%}` or `\textbf{Elasticsearch}` while keeping visible wording identical. It defaults to one meaningful bold span per bullet and leaves low-signal bullets unbolded. After reviewing the preview, ask the same `$cv-bold-highlights` skill to apply it because bold glyphs can change wrapping.
 
 ## Deterministic checks
 

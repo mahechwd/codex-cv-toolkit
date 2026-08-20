@@ -1,6 +1,6 @@
 ---
 name: cv-tailor-bullets
-description: Draft truthful job-specific rewrites for one named Experience or Projects block in a private application CV, using only supported keywords while preserving bullet count and footprint. Produces a review file and never edits CV bullets.
+description: Draft truthful job-specific rewrites for one named Experience or Projects block in a private application CV, using only supported keywords while preserving bullet count and footprint. May apply its own exact draft when explicitly requested.
 ---
 
 # CV tailor bullets
@@ -50,4 +50,4 @@ Create a truthful, job-specific application CV without mutating the canonical CV
 - Compare the preview with the application baseline using `python3 scripts/cv_tex.py <preview-path> --compare applications/<slug>/main.tex --tolerance 3` when bullet order and count remain aligned.
 - Compile and inspect the preview PDF when a LaTeX toolchain is available. Confirm unchanged line counts and a one-page final CV when that was already the baseline.
 - If rendering is unavailable, state that line-count equality is estimated rather than verified.
-- Report the application and draft paths, target, proposed changes, supported keywords added, evidence for each addition, unsupported gaps left out, character deltas, and visual-verification status. Applying requires separate explicit approval through `$cv-apply-bullets`.
+- Report the application and draft paths, target, proposed changes, supported keywords added, evidence for each addition, unsupported gaps left out, character deltas, and visual-verification status. If the user explicitly asks this skill to apply that exact draft, show it once, set its status to `approved`, and run `python3 scripts/cv_drafts.py apply`; do not require another skill.

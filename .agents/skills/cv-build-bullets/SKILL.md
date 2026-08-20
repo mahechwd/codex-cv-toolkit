@@ -1,18 +1,18 @@
 ---
 name: cv-build-bullets
-description: Draft or strengthen content-first software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or one named Experience or Projects block without a default length limit. Do not read context files or PDFs unless explicitly requested. Produces chat proposals or review files and never edits a CV.
+description: Write or strengthen content-first software-engineering CV bullets from pasted text, current CV bullets, explicit user facts, and optionally requested context. Use for prompt-only rewrites or to edit one named Experience or Projects block directly in a LaTeX CV without a default length limit. Do not read context files or PDFs unless explicitly requested.
 ---
 
 # CV build bullets
 
-Create the strongest truthful bullets before layout compression. Work in either prompt-only mode or CV-targeted draft mode.
+Create the strongest truthful bullets before layout compression. Work in either prompt-only mode or CV edit mode.
 
 ## Choose the mode
 
 - Read [references/building-rules.md](references/building-rules.md) completely before drafting.
 - Use **prompt-only mode** when the user pastes bullets and asks to create, edit, strengthen, or reword them without asking to target a CV file.
-- Use **CV-targeted draft mode** when the request names, or clearly intends to update, a block in a CV file.
-- Do not force a pasted-bullet request through repository discovery, `main.tex`, `cv-context/`, or the JSON draft workflow.
+- Use **CV edit mode** when the request names, or clearly intends to update, a block in a CV file.
+- Do not force a pasted-bullet request through repository discovery, `main.tex`, or `cv-context/`.
 
 ## Control context access
 
@@ -31,31 +31,33 @@ Create the strongest truthful bullets before layout compression. Work in either 
 3. Strengthen the achievement, technical mechanism, and supported impact without adding unsupported facts.
 4. If the pasted text contains `\resumeItem{...}` commands, change only their inner content and preserve the wrappers and surrounding text exactly.
 5. Do not impose a character or line limit unless the user supplies one. Use `$cv-fit-bullets` later when layout is the actual goal.
-6. Return the proposed bullets in chat in the same general format as the input. Do not create a JSON draft or edit any file unless the user asks to bind the result to a named CV target.
+6. Return the proposed bullets in chat in the same general format as the input. Do not edit a file unless the user asks to target a named CV block.
 
-## CV-targeted draft mode
+## CV edit mode
 
 1. Obtain an explicit kind (`experience` or `project`), target name, and CV path; default to canonical `main.tex` only when that is clearly intended.
 2. Run `python3 scripts/cv_drafts.py list <cv-path>` and require one exact target match. Do not guess between plausible targets.
-3. Initialise a non-overwriting draft with `python3 scripts/cv_drafts.py init --cv <cv-path> --kind <kind> --target <name> --output drafts/build/<descriptive-name>.json`.
-4. Use the recorded active `\resumeItem{...}` slots. Preserve their count. Stop if the block is missing, ambiguous, or contains no slots.
-5. Treat non-empty current bullets and explicit prompt facts as sufficient evidence. Add context evidence only under the access rules above.
-6. Do not edit tracked examples with personal information.
+3. Read the exact target block and record its active `\resumeItem{...}` contents and count. Stop if the block is missing, ambiguous, or contains no slots.
+4. Treat non-empty current bullets and explicit prompt facts as sufficient evidence. Add context evidence only under the access rules above.
+5. Build exactly one replacement for each existing slot, then use `apply_patch` to replace only the inner content of those `\resumeItem{...}` commands in the selected block.
+6. Edit the named CV immediately. Do not create a draft JSON and do not wait for a separate approval step.
+7. Do not add, delete, reorder, or move bullet commands. Preserve headings, roles, dates, locations, chronology, commands, comments, whitespace outside the selected inner contents, and every unrelated byte.
+8. Never edit tracked examples with personal information.
 
-## Build the draft
+## Write the bullets
 
 1. If all existing slots are empty, create distinct achievements from the available evidence. If any contain text, strengthen or reword them using their established claims and any authorised evidence; retain strong wording that does not need change.
 2. Select distinct, material achievements for exactly the available bullet slots.
 3. Track the source of every claim, including technologies, metrics, ownership, scale, and outcomes.
 4. Apply every content rule in `references/building-rules.md`.
 5. Do not impose a character or line limit unless the user explicitly provides one. Preserve useful technical mechanism and context even when the first draft spans multiple lines.
-6. Escape LaTeX-sensitive characters and write inner LaTeX only—never include `\resumeItem{}` wrappers.
-7. Replace only `proposed_bullets`, `evidence_files`, and `notes` in the JSON draft. Keep `status` as `draft`; do not edit any `.tex` file.
+6. Escape LaTeX-sensitive characters correctly inside each existing wrapper.
 
 ## Verify and report
 
-- Run `python3 scripts/cv_drafts.py show <draft-path>` and confirm the proposed count matches the recorded slots and every proposed bullet is non-empty.
-- Re-read the proposals and trace each material claim to current wording, prompt facts, or an explicitly authorised context source.
-- Report the draft path, target, evidence actually used, bullet count, rendered character counts, and any context files intentionally skipped. Do not imply that unrequested context was inspected.
+- Rerun `python3 scripts/cv_drafts.py list <cv-path>` and `python3 scripts/cv_tex.py <cv-path>` after editing.
+- Confirm the selected bullet count is unchanged, every bullet is non-empty, LaTeX is balanced, and no content outside the selected `\resumeItem{...}` bodies changed. Correct the edit immediately if any invariant fails.
+- Re-read the final bullets and trace each material claim to current wording, prompt facts, or an explicitly authorised context source.
+- Report the CV path, target, before/after bullets, evidence actually used, bullet count, rendered character counts, and any context files intentionally skipped. Do not imply that unrequested context was inspected.
 - State explicitly that the bullets are content-first and have not been fitted to a page unless the user also requested and authorised that separate work.
-- Ask the user to review the draft. Applying it is a separate `$cv-apply-bullets` action requiring explicit approval.
+- Tell the user that the named CV block has been updated and they can request another revision after reviewing `main.tex`.
