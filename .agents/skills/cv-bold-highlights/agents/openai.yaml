@@ -1,4 +1,4 @@
 interface:
   display_name: "CV Bold Highlights"
-  short_description: "Draft sparse LaTeX highlights for CV bullets"
-  default_prompt: "Use $cv-bold-highlights to draft sparse bold highlights for a named CV experience or project."
+  short_description: "Bold key details directly in a LaTeX CV"
+  default_prompt: "Use $cv-bold-highlights to add sparse bold highlights directly to one named CV experience or project in main.tex."

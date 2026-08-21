@@ -21,6 +21,8 @@
 - Bold only existing, truthful content; do not introduce a keyword or metric.
 - Keep LaTeX escapes inside the bold command.
 - Re-render after formatting because bold glyphs can change line wrapping even when visible character count is unchanged.
+- Preserve each selected bullet's original rendered line count and the CV's page count. Never leave a bullet above two rendered lines; remove lower-priority emphasis when needed.
+- Direct edits may change only existing `\resumeItem{...}` contents in the selected block. Do not create draft or preview files.
 
 ## Guidance basis
 

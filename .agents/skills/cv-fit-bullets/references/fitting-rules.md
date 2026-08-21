@@ -29,6 +29,7 @@ When a bullet needs more visual weight, add only supported detail in this order:
 5. concise ownership or collaboration context.
 
 Never add filler, duplicate another bullet, or invent context to approach a target length.
+When current wording lacks enough detail, use only explicit user facts or context files the user authorised the skill to read. A visually sparse but truthful draft is preferable to an unsupported full-looking one.
 
 ## Layout modes
 
@@ -47,6 +48,8 @@ Never add filler, duplicate another bullet, or invent context to approach a targ
 - Use two rendered lines for most bullets. Keep a complete one-line bullet when it is genuinely strong and concise; use one-line bullets sparingly and prefer them near the end of a block when that creates a clean taper.
 - Never allow a third rendered line. If the supported result and mechanism cannot fit within two lines after three careful revisions, report the content conflict instead of dropping a material fact or applying the draft.
 - Treat roughly 35–90% final-line fill as a useful visual range, not a hard quota. A shorter ending can look intentional when it contains a complete phrase; avoid orphaned words or fragments below roughly 25% when supported rewording can fix them.
+- For a block containing at least three two-line bullets, require approximately 60% or greater average final-line fill and at least one fuller final line around 75% or greater. This is a block-density floor: individual shorter endings remain desirable for contrast.
+- Fail `balanced-lines` when every ending clusters in the short range or when the block average remains below the density floor. Seek authorised evidence before expanding; if none supports useful detail, report the conflict and do not apply the draft.
 - Preserve contrast: include both shorter and fuller endings when the content permits, and avoid making several bullets terminate at nearly the same horizontal position.
 - A slightly shorter final bullet often closes a block cleanly, but do not force the section into a descending staircase or mechanical short–long alternation.
 - Keep ordinary interword spacing and let LaTeX wrap naturally. Never insert manual line breaks, repeated spaces, non-breaking spaces, or horizontal-spacing commands merely to sculpt the silhouette.

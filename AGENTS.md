@@ -16,8 +16,11 @@
 - `$cv-build-bullets` uses a default hard ceiling of 220 visible characters per bullet and a target block average of 175–180. A CV edit is incomplete until the target-specific check confirms every bullet is at most 220 and the block average is at most 180; never add filler to make a complete bullet reach 175.
 - Keep one primary accomplishment per bullet. Split independently valuable achievements across existing slots when possible, without changing the block's `\resumeItem` count.
 - Every build bullet must pass both audience checks: an HR recruiter understands the accomplishment and value from the opening clause, while a senior engineer sees one selective, concrete technical method or decision. Never substitute stack density for engineering credibility.
-- Fitting, tailoring, and bolding may still produce preview drafts. The producing skill may apply its own exact draft through `python3 scripts/cv_drafts.py apply` only after the user explicitly asks it to do so; no separate apply skill is used.
-- `$cv-fit-bullets` has a hard maximum of two rendered lines per bullet in every mode. Never approve or apply a three-line fitted bullet; if rendering is unavailable, leave the result as an unapplied estimate.
+- `$cv-fit-bullets` edits the named CV immediately and may replace only existing `\resumeItem{...}` contents in the selected target. It must not create a JSON draft, preview TeX file, review copy, or separate approval step.
+- `$cv-bold-highlights` edits the named CV immediately and may add only `\textbf{...}` inside existing `\resumeItem{...}` contents in the selected target. Visible wording and rendered line counts must remain identical, and it must not create draft or preview files.
+- Tailoring may still produce preview drafts and may apply its own exact draft through `python3 scripts/cv_drafts.py apply` only after the user explicitly asks it to do so; no separate apply skill is used.
+- `$cv-fit-bullets` has a hard maximum of two rendered lines per bullet in every mode. Never complete a three-line fitted bullet; if rendering is unavailable, stop before editing because the limit cannot be verified.
+- In `balanced-lines` mode, reject a uniformly sparse block: for at least three two-line bullets, target at least 60% average final-line fill and one ending around 75% or more. Expand only from current wording, explicit user facts, or context files the user explicitly authorised; otherwise do not modify the CV.
 - Preserve commands, bullet count, order, headings, dates, chronology, comments, whitespace outside the selected bullet bodies, and every unrelated byte of the CV.
 - Treat `main.tex` as canonical. Job-specific tailoring targets only a private `applications/<slug>/main.tex` copy.
 - Scoring is read-only and must not modify the CV or draft.
@@ -26,4 +29,4 @@
 
 - Run `python3 -m unittest discover -s tests -v` after changing scripts.
 - Run the official skill quick validator after changing any folder under `.agents/skills/`.
-- When layout matters, validate a generated preview. State clearly when a LaTeX renderer is unavailable and line counts are estimated.
+- When layout matters, validate rendered output. `$cv-fit-bullets` and `$cv-bold-highlights` compile the edited CV into a temporary directory; other producing skills may validate a generated preview. State clearly when a LaTeX renderer is unavailable.

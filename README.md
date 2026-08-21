@@ -8,7 +8,7 @@ The central rule is simple:
 facts or optional evidence → direct \resumeItem edit → review main.tex → request another revision
 ```
 
-`$cv-build-bullets` edits one named Experience or Projects block immediately and may replace only the contents of its existing `\resumeItem{...}` commands. Layout-sensitive skills may still create previews, but each producing skill can apply its own reviewed result; there is no separate apply skill.
+`$cv-build-bullets`, `$cv-fit-bullets`, and `$cv-bold-highlights` edit one named Experience or Projects block immediately and may replace only the contents of its existing `\resumeItem{...}` commands. Tailoring may still create previews and apply its own reviewed result; there is no separate apply skill.
 
 ## Start here: where your content goes
 
@@ -48,9 +48,9 @@ If you already created `main.tex`, `job-description.txt`, or `cv-context/`, the 
 | Skill | Purpose | Output |
 |---|---|---|
 | `$cv-build-bullets` | Rewrite pasted bullets or directly fill/strengthen a named CV block using recruiter-readable, technically credible XYZ claims | Chat proposal or updated CV block |
-| `$cv-fit-bullets` | Compress or expand one block to a line-count or page footprint | Draft JSON + preview |
+| `$cv-fit-bullets` | Compress, expand, or visually balance one named block | Updated CV block |
 | `$cv-tailor-bullets` | Add only job-relevant terms supported by evidence | Draft JSON + preview |
-| `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Draft JSON + preview |
+| `$cv-bold-highlights` | Add sparse `\textbf{}` around existing metrics or technologies | Updated CV block |
 | `$cv-score` | Score ATS readiness and hiring-manager fit against a job description out of 100 | Read-only scorecard |
 
 There is intentionally no all-in-one `customise-cv` skill. Content, layout, job tailoring, formatting, and scoring remain separate concerns, but applying an edit does not require a separate skill.
@@ -177,7 +177,7 @@ Review the result in `main.tex`. If you dislike the wording, tell `$cv-build-bul
 Content-first bullets may intentionally span multiple lines. Fit one named block only after its content is strong:
 
 ```text
-Use $cv-fit-bullets on main.tex for experience "Example Company". Draft one-line versions with a hard maximum of 112 visible characters.
+Use $cv-fit-bullets on main.tex for experience "Example Company". Fit the bullets directly to one line with a hard maximum of 112 visible characters.
 ```
 
 Supported modes are:
@@ -194,7 +194,15 @@ For example:
 Use $cv-fit-bullets on main.tex for experience "Example Company" in balanced-lines mode. Use the supplied screenshots as the visual-rhythm reference and preserve a natural mix of final-line lengths.
 ```
 
-The skill creates a new draft and preview. Every mode has a strict two-rendered-line maximum; a three-line bullet must never be applied. Character count is only a fallback because proportional fonts, word boundaries, and `\textbf{}` can change actual wrapping. In `balanced-lines` mode, compile and inspect the block as a whole: most bullets should occupy two lines, their final lines should taper to varied natural endpoints, and rare one-line bullets should remain concise rather than being padded. When satisfied, ask the same `$cv-fit-bullets` skill to apply that exact draft; no separate apply skill is needed.
+The skill edits only the selected `\resumeItem{...}` contents directly in the named CV, then compiles that CV into a temporary directory for verification. It does not create a JSON draft, preview TeX file, or approval step. Every mode has a strict two-rendered-line maximum; a three-line bullet must never remain in the completed edit. In `balanced-lines` mode, inspect the block as a whole: most bullets should occupy two lines, their final lines should taper to varied natural endpoints, and rare one-line bullets should remain concise rather than being padded. For blocks with at least three two-line bullets, the default density floor is approximately 60% average final-line fill with at least one ending around 75% or more.
+
+When existing bullets do not contain enough truthful detail to reach that density, explicitly authorise the target's context folder:
+
+```text
+Use $cv-fit-bullets on main.tex for experience "Example Company" in balanced-lines mode. If needed, read its cv-context folder for supported detail, but do not read PDFs.
+```
+
+The skill may then use non-empty `.md` and `.txt` evidence from that target only. PDFs remain opt-in. If the available evidence still cannot support a fuller result, the skill does not modify the CV instead of inventing or padding content. Review the direct result in `main.tex` and request another revision if needed.
 
 ## Tailoring to a job
 
@@ -230,10 +238,10 @@ Supported equivalents and keywords may be proposed only when the relevant eviden
 ## Sparse bold highlights
 
 ```text
-Use $cv-bold-highlights on applications/example-company-software-engineer/main.tex for experience "Example Company". Create a draft only.
+Use $cv-bold-highlights on main.tex for experience "Example Company" and update the selected bullets directly.
 ```
 
-This stage may propose forms such as `\textbf{30\%}` or `\textbf{Elasticsearch}` while keeping visible wording identical. It defaults to one meaningful bold span per bullet and leaves low-signal bullets unbolded. After reviewing the preview, ask the same `$cv-bold-highlights` skill to apply it because bold glyphs can change wrapping.
+This stage may add forms such as `\textbf{30\%}` or `\textbf{Elasticsearch}` while keeping visible wording identical. It defaults to one meaningful bold span per bullet and leaves low-signal bullets unbolded. The skill edits only the selected `\resumeItem{...}` contents, compiles the CV using temporary output, and removes lower-priority emphasis if bold glyphs change line wrapping or page count. It does not create a JSON draft, preview TeX file, or approval step. Review the direct result in `main.tex` and request another revision if needed.
 
 ## Deterministic checks
 
